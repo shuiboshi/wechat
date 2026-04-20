@@ -1,4 +1,4 @@
-module github.com/shuiboshi/wechat
+module github.com/shuiboshi/wechat/v1
 
 go 1.14
 
