@@ -19,7 +19,7 @@ type RedisOpts struct {
 	Database    int    `yml:"database" json:"database"`
 	MaxIdle     int    `yml:"max_idle" json:"max_idle"`
 	MaxActive   int    `yml:"max_active" json:"max_active"`
-	IdleTimeout int32  `yml:"idle_timeout" json:"idle_timeout"` //second
+	IdleTimeout int    `yml:"idle_timeout" json:"idle_timeout"` //second
 }
 
 //NewRedis 实例化
@@ -43,6 +43,11 @@ func NewRedis(opts *RedisOpts) *Redis {
 		},
 	}
 	return &Redis{pool}
+}
+
+//SetRedisPool 设置redis连接池
+func (r *Redis) SetRedisPool(pool *redis.Pool) {
+	r.conn = pool
 }
 
 //SetConn 设置conn
@@ -90,10 +95,7 @@ func (r *Redis) IsExist(key string) bool {
 
 	a, _ := conn.Do("EXISTS", key)
 	i := a.(int64)
-	if i > 0 {
-		return true
-	}
-	return false
+	return i > 0
 }
 
 //Delete 删除
