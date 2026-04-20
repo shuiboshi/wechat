@@ -12,7 +12,8 @@ import (
 
 const (
 	//AccessTokenURL 获取access_token的接口
-	accessTokenURL = "https://api.weixin.qq.com/cgi-bin/token"
+	//accessTokenURL = "https://api.weixin.qq.com/cgi-bin/token"
+	accessTokenURL = "https://api.weixin.qq.com/cgi-bin/stable_token"
 	//CacheKeyOfficialAccountPrefix 微信公众号cache key前缀
 	CacheKeyOfficialAccountPrefix = "gowechat_officialaccount_"
 	//CacheKeyMiniProgramPrefix 小程序cache key前缀
@@ -81,9 +82,15 @@ func (ak *DefaultAccessToken) GetAccessToken() (accessToken string, err error) {
 
 //GetTokenFromServer 强制从微信服务器获取token
 func GetTokenFromServer(appID, appSecret string) (resAccessToken ResAccessToken, err error) {
-	url := fmt.Sprintf("%s?grant_type=client_credential&appid=%s&secret=%s", accessTokenURL, appID, appSecret)
+	//url := fmt.Sprintf("%s?grant_type=client_credential&appid=%s&secret=%s", accessTokenURL, appID, appSecret)
 	var body []byte
-	body, err = util.HTTPGet(url)
+	param := map[string]string{
+		"grant_type": "client_credential",
+		"appid": appID,
+		"secret": appSecret,
+	}
+	jsonStr, err := json.Marshal(param)
+	body, err = util.HTTPPost(accessTokenURL, string(jsonStr))
 	if err != nil {
 		return
 	}

@@ -50,6 +50,8 @@ type QRCoder struct {
 	LineColor Color `json:"line_color,omitempty"`
 	// isHyaline 是否需要透明底色
 	IsHyaline bool `json:"is_hyaline,omitempty"`
+	CheckPath bool `json:"check_path,omitempty"`
+	EnvVersion string `json:"env_version,omitempty"`
 }
 
 // fetchCode 请求并返回二维码二进制数据
